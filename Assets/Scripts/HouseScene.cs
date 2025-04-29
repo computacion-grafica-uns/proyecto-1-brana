@@ -117,7 +117,6 @@ public class HouseScene : MonoBehaviour {
             new Vector3(kitchenWidth / 2.0f - cabinetBounds.extents.x/ 2.0f - wallGap, 0, kitchenLength / 2.0f - cabinetBounds.extents.z/2.0f - wallGap),
             new Vector3(0, Mathf.Deg2Rad * 90.0f, 0),
             new Vector3(0.5f, 0.5f, 0.5f)
-
         );
 
         ObjectInScene oven = InstantiateObject("KitchenStove1");
@@ -127,6 +126,15 @@ public class HouseScene : MonoBehaviour {
             new Vector3(0, Mathf.Deg2Rad * 180.0f, 0),
             new Vector3(0.5f, 0.5f, 0.5f)
         );
+
+        ObjectInScene windowWall = InstantiateObject("WindowWall");
+        Bounds windowWallBounds = windowWall.GetBoundingBoxDimensions();
+        PlaceObjectInScene(windowWall, kitchenObjects.objs,
+            new Vector3(kitchenWidth / 2.0f, kitchenHeight / 2.0f, 0),
+            new Vector3(Mathf.Deg2Rad * 270.0f, 0, Mathf.Deg2Rad * 90.0f),
+            new Vector3(kitchenLength, 0, kitchenWidth*1.6f) // exactly 1.6?
+        );
+        walls.Add(windowWall);
 
         return (roofs, walls, kitchenObjects);
     }
@@ -164,16 +172,15 @@ public class HouseScene : MonoBehaviour {
             new Vector3(0.08f, 0.08f, 0.08f)
         );
 
-        // later, this needs a door
-        ObjectInScene nearBedroomWall = InstantiateObject("PlaneY");
+        ObjectInScene nearBedroomWall = InstantiateObject("2x2_Door");
         PlaceObjectInScene(nearBedroomWall, livingRoomObjects.objs,
             new Vector3(-mainRoomWidth / 2 + 3.0f, mainRoomLength / 2, 0),
-            new Vector3(0.0f, 0.0f, -Mathf.Deg2Rad * 90.0f),
+            new Vector3(0.0f, Mathf.Deg2Rad * 180.0f, Mathf.Deg2Rad * 90.0f),
             new Vector3(mainRoomHeight, 0, mainRoomLength)
         );
         walls.Add(nearBedroomWall);
 
-        // And this, a window
+        // this needs a window
         ObjectInScene farBedroomWall = InstantiateObject("PlaneY");
         PlaceObjectInScene(farBedroomWall, livingRoomObjects.objs,
             new Vector3(-mainRoomWidth / 2, mainRoomLength / 2, 0),
@@ -280,10 +287,15 @@ public class HouseScene : MonoBehaviour {
         roofs = new();
         walls = new();
 
+        ObjectInScene a = InstantiateObject("toilet2"); Debug.LogError("toilet2 bounds = " + a.GetBoundingBoxDimensions() + "\n" + a.GetBoundingBoxDimensions().size);
+        ObjectInScene b = InstantiateObject("sink"); Debug.LogError("sink bounds = " + b.GetBoundingBoxDimensions() + "\n" + b.GetBoundingBoxDimensions().size);
+        ObjectInScene c = InstantiateObject("mirror"); Debug.LogError("mirror bounds = " + c.GetBoundingBoxDimensions() + "\n" + c.GetBoundingBoxDimensions().size);
+        ObjectInScene d = InstantiateObject("shower"); Debug.LogError("shower bounds = " + d.GetBoundingBoxDimensions() + "\n" + d.GetBoundingBoxDimensions().size);
+
         (List<ObjectInScene> livingRoomRoof, List<ObjectInScene> livingRoomWalls, Collection livingRoomObjects) = MakeMainRoom();
-        livingRoomObjects.collectionTransform.position = new Vector3(-8.0f / 2.0f - 2.5f/2.0f, 0, 0);
+        livingRoomObjects.collectionTransform.position = new Vector3(-8.0f / 2.0f - 2.5f / 2.0f, 0, 0);
         livingRoomObjects.UpdateTransforms();
-        AddRoom(livingRoomRoof, livingRoomWalls, livingRoomObjects, roofs, walls, sceneObjects);     
+        AddRoom(livingRoomRoof, livingRoomWalls, livingRoomObjects, roofs, walls, sceneObjects);
 
         (List<ObjectInScene> kitchenRoofs, List<ObjectInScene> kitchenWalls, Collection kitchenObjects) = MakeKitchen();
         /* kitchenObjects.collectionTransform.position = new Vector3(0, 0, 0);
