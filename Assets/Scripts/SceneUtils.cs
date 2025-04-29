@@ -1,5 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
+
+public class CollectionTree
+{
+    public SceneTransform transform;
+    List<ObjectInScene> objects;
+    List<CollectionTree> subcollections;
+    public CollectionTree()
+    {
+        objects = new();
+        subcollections = new();
+    }
+
+    public void AddTopLevelChild(ObjectInScene obj)
+    {
+        objects.Add(obj);
+    }
+
+    public void AddChildCollection(CollectionTree col)
+    {
+        subcollections.Add(col);
+    }
+
+    public void ApplyTransform(Matrix4x4 parentTransform)
+    {
+        foreach (ObjectInScene obj in objects)
+        {
+            Matrix4x4 newModelMatrix = parentTransform * obj.transform.ModelMatrix();
+            obj.SetModelMatrix(newModelMatrix);
+        }
+
+        foreach (CollectionTree ct in subcollections)
+        {
+            ct.ApplyTransform(parentTransform);
+        }
+    }
+}
+
 public class Collection
 {
     public List<ObjectInScene> objs;
