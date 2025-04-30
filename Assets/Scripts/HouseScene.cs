@@ -286,14 +286,6 @@ public class HouseScene : MonoBehaviour {
         livingRoomObjects.objs.Add(longWallB);
         walls.Add(longWallB);
 
-        ObjectInScene TV_table = InstantiateObject("tvtable");
-        // TV_table.transform.position = new Vector3(2.0f, 0, -1.3f);
-        TV_table.transform.position = new Vector3(0, 0, 0);
-        TV_table.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 90.0f, 0);
-        TV_table.transform.scale = new Vector3(1,1,1);
-        TV_table.ComputeModelMatrix();
-        livingRoomObjects.objs.Add(TV_table);
-
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         ObjectInScene table = LoadObject("Assets/Models/widetable.obj");
