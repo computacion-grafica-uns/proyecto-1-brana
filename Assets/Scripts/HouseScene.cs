@@ -182,10 +182,34 @@ public class HouseScene : MonoBehaviour {
         ObjectInScene roof = InstantiateObject("PlaneY");
         PlaceObjectInScene(roof, bathroomObjects.objs,
             new Vector3(0, bathroomHeight, 0),
-            new Vector3(Mathf.Deg2Rad * 180.0f, 0.0f, 0.0f), // point normal downwards
+            new Vector3(Mathf.Deg2Rad * 180.0f, 0.0f, 0.0f),
             new Vector3(bathroomWidth, 0, bathroomLength)
         );
         roofs.Add(roof);
+
+        ObjectInScene backWall = InstantiateObject("PlaneY");
+        PlaceObjectInScene(backWall, bathroomObjects.objs,
+            new Vector3(0, bathroomHeight/2, bathroomLength / 2),
+            new Vector3(Mathf.Deg2Rad * 90.0f, 0.0f, 0.0f),
+            new Vector3(bathroomWidth, 0, bathroomLength)
+        );
+        walls.Add(backWall);
+
+        ObjectInScene leftWall = InstantiateObject("PlaneY");
+        PlaceObjectInScene(leftWall, bathroomObjects.objs,
+            new Vector3(bathroomWidth/2, bathroomHeight/2, 0),
+            new Vector3(0, 0, Mathf.Deg2Rad * 90.0f),
+            new Vector3(bathroomHeight, 0, bathroomLength)
+        );
+        walls.Add(leftWall);
+
+        ObjectInScene rightWall = InstantiateObject("PlaneY");
+        PlaceObjectInScene(rightWall, bathroomObjects.objs,
+            new Vector3(-bathroomWidth / 2, bathroomHeight / 2, 0),
+            new Vector3(0, 0, Mathf.Deg2Rad * 90.0f),
+            new Vector3(bathroomHeight, 0, bathroomLength)
+        );
+        walls.Add(rightWall);
 
         ObjectInScene toilet = InstantiateObject("toilet2");
         PlaceObjectInScene(toilet, bathroomObjects.objs,
