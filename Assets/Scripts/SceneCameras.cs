@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public abstract class SceneCamera
 {
@@ -76,7 +77,7 @@ public class OrbitalCamera : SceneCamera
         Debug.Log("[ORBITAL CAM::Constructor/3] distanceFromTarget = " + distanceFromTarget);
         this.forward = (position - target).normalized; // not (target - position). the point is to have a vector point *from* target out somewhere into the conceptual sphere
         this.position = target; // store the lookAt point in position, because that will be the center of the sphere
-        this.up = up; // -up for D3D11?
+        this.up = up;
     }
 
     public float horizontalRotateSpeed = 90.0f; // "degrees per second"
@@ -105,12 +106,16 @@ public class OrbitalCamera : SceneCamera
 
         if (Input.GetKey(KeyCode.R))
         {
-            // Debug.LogWarning("[ORBITAL CAM] RESET");
-            this.position = new Vector3(0, 1, 0);
+            Vector3 position = new Vector3(-5, 1, 0);
+            Vector3 target = new Vector3(-4, 1, 0);
+            // Vector3 orbitalForward = (orbitalLookAt - orbitalPos).normalized;
             this.up = Vector3.up;
-            Vector3 cameraPos = new Vector3(0, 1, 3);
-            this.distanceFromTarget = 3;
-            this.forward = (cameraPos - position).normalized;
+
+            // Debug.LogWarning("[ORBITAL CAM] RESET");
+
+            this.distanceFromTarget = (position - target).magnitude;
+            this.forward = (position - target).normalized; // not (target - position). the point is to have a vector point *from* target out somewhere into the conceptual sphere
+            this.position = target; // store the lookAt point in position, because that will be the center of the sphere
         }
     }
 

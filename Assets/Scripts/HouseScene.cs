@@ -22,10 +22,10 @@ public class HouseScene : MonoBehaviour {
     private SceneCamera orbitalCamera;
     private void CreateCamera()
     {
-        firstPersonCamera = new FirstPersonCamera(new Vector3(-5, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0));
+        firstPersonCamera = new FirstPersonCamera(new Vector3(-7, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0));
 
         Vector3 orbitalPos = new Vector3(-5, 1, 0);
-        Vector3 orbitalLookAt = new Vector3(0, 1, 0);
+        Vector3 orbitalLookAt = new Vector3(-4, 1, 0);
         // Vector3 orbitalForward = (orbitalLookAt - orbitalPos).normalized;
         Vector3 orbitalUp = Vector3.up;
         orbitalCamera = new OrbitalCamera(orbitalPos, orbitalLookAt, orbitalUp);
