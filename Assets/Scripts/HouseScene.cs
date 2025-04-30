@@ -22,9 +22,9 @@ public class HouseScene : MonoBehaviour {
     private SceneCamera orbitalCamera;
     private void CreateCamera()
     {
-        firstPersonCamera = new FirstPersonCamera(new Vector3(3, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0));
+        firstPersonCamera = new FirstPersonCamera(new Vector3(-5, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0));
 
-        Vector3 orbitalPos = new Vector3(3, 1, 0);
+        Vector3 orbitalPos = new Vector3(-5, 1, 0);
         Vector3 orbitalLookAt = new Vector3(0, 1, 0);
         // Vector3 orbitalForward = (orbitalLookAt - orbitalPos).normalized;
         Vector3 orbitalUp = Vector3.up;
@@ -98,7 +98,7 @@ public class HouseScene : MonoBehaviour {
         ObjectInScene fridge = InstantiateObject("Fridge");
         Bounds fridgeBounds = fridge.GetBoundingBoxDimensions();
         PlaceObjectInScene(fridge, kitchenObjects.objs,
-            new Vector3(-fridgeBounds.extents.x/2.0f, 0, kitchenLength / 2.0f - fridgeBounds.extents.z / 2.0f - wallGap),
+            new Vector3(-fridgeBounds.extents.x/2.0f, 0, kitchenLength / 2.0f - fridgeBounds.extents.z / 2.0f - wallGap*2),
             new Vector3(0, Mathf.Deg2Rad * 90.0f, 0),
             new Vector3(0.55f, 0.55f, 0.55f)
         );
@@ -127,6 +127,14 @@ public class HouseScene : MonoBehaviour {
             new Vector3(0.5f, 0.5f, 0.5f)
         );
 
+        ObjectInScene cabinet = InstantiateObject("Wardrobe2");
+        Bounds wardrobe2Bounds = cabinet.GetBoundingBoxDimensions();
+        PlaceObjectInScene(cabinet, kitchenObjects.objs,
+            new Vector3(-wardrobe2Bounds.extents.x / 2.0f, 0, -kitchenLength / 2.0f + wardrobe2Bounds.extents.z / 2.0f - wallGap*2.0f),
+            new Vector3(0, Mathf.Deg2Rad * 270.0f, 0),
+            new Vector3(0.45f, 0.7f, 0.45f)
+        );
+
         ObjectInScene windowWall = InstantiateObject("WindowWall");
         Bounds windowWallBounds = windowWall.GetBoundingBoxDimensions();
         PlaceObjectInScene(windowWall, kitchenObjects.objs,
@@ -135,6 +143,22 @@ public class HouseScene : MonoBehaviour {
             new Vector3(kitchenLength, 0, kitchenWidth*1.4f)
         );
         walls.Add(windowWall);
+
+        ObjectInScene SideWallA = InstantiateObject("PlaneY");
+        PlaceObjectInScene(SideWallA, kitchenObjects.objs,
+            new Vector3(0, kitchenHeight / 2.0f, kitchenLength / 2.0f),
+            new Vector3(Mathf.Deg2Rad * 90.0f, 0),
+            new Vector3(kitchenWidth, 0, kitchenHeight)
+        );
+        walls.Add(SideWallA);
+
+        ObjectInScene SideWallB = InstantiateObject("PlaneY");
+        PlaceObjectInScene(SideWallB, kitchenObjects.objs,
+            new Vector3(0, kitchenHeight / 2.0f, -kitchenLength / 2.0f),
+            new Vector3(-Mathf.Deg2Rad * 90.0f, 0),
+            new Vector3(kitchenWidth, 0, kitchenHeight)
+        );
+        walls.Add(SideWallB);
 
         return (roofs, walls, kitchenObjects);
     }
@@ -288,32 +312,44 @@ public class HouseScene : MonoBehaviour {
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        ObjectInScene table = LoadObject("Assets/Models/widetable.obj");
+        ObjectInScene pcTable = InstantiateObject("pcTable2");
+        pcTable.transform.position = new Vector3(0, 0, -1.65f);
+        pcTable.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 270.0f, 0);
+        pcTable.ComputeModelMatrix();
+        livingRoomObjects.objs.Add(pcTable);
+
+        ObjectInScene pcChair = InstantiateObject("chair2");
+        pcChair.transform.position = new Vector3(0.2f, 0, -1.45f);
+        pcChair.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 84.5f, 0);
+        pcChair.ComputeModelMatrix();
+        livingRoomObjects.objs.Add(pcChair);
+
+        ObjectInScene table = InstantiateObject("widetable");
         table.transform.position = new Vector3(2.0f, 0, 1.3f);
         table.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 90.0f, 0);
         table.ComputeModelMatrix();
 
-        ObjectInScene chair1 = LoadObject("Assets/Models/chair4.obj");
+        ObjectInScene chair1 = InstantiateObject("chair4");
         chair1.transform.position = new Vector3(2.0f + 0.4f, 0, 1.3f + 0.25f);
         chair1.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 90.0f, 0);
         chair1.ComputeModelMatrix();
 
-        ObjectInScene chair2 = LoadObject("Assets/Models/chair1.obj");
+        ObjectInScene chair2 = InstantiateObject("chair1");
         chair2.transform.position = new Vector3(2.0f - 0.4f, 0, 1.3f + 0.25f);
         chair2.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 90.0f, 0);
         chair2.ComputeModelMatrix();
 
-        ObjectInScene chair3 = LoadObject("Assets/Models/chair4.obj");
+        ObjectInScene chair3 = InstantiateObject("chair4");
         chair3.transform.position = new Vector3(2.0f + 0.4f, 0, 1.3f - 0.25f);
         chair3.transform.rotation = new Vector3(0, -Mathf.Deg2Rad * 90.0f, 0);
         chair3.ComputeModelMatrix();
 
-        ObjectInScene chair4 = LoadObject("Assets/Models/chair1.obj");
+        ObjectInScene chair4 = InstantiateObject("chair1");
         chair4.transform.position = new Vector3(2.0f - 0.4f, 0, 1.3f - 0.25f);
         chair4.transform.rotation = new Vector3(0, -Mathf.Deg2Rad * 90.0f, 0);
         chair4.ComputeModelMatrix();
 
-        ObjectInScene chair5 = LoadObject("Assets/Models/chair1.obj");
+        ObjectInScene chair5 = InstantiateObject("chair1");
         chair5.transform.position = new Vector3(1.1f, 0, 1.3f);
         chair5.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 15.4f, 0);
         chair5.ComputeModelMatrix();
@@ -442,6 +478,7 @@ public class HouseScene : MonoBehaviour {
             foreach (ObjectInScene obj in sceneObjects)
             {
                 obj.SetViewMatrix(ViewMatrix);
+                // obj.obj.GetComponent<MeshRenderer>().material.SetMatrix("_PVMInverse", (ProjectionMatrix * ViewMatrix * obj.ObjectModelMatrix).inverse);
                 // obj.RecomputeModelMatrix(); // the objects won't move for now
             }
         } else {
