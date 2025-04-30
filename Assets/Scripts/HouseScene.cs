@@ -78,7 +78,7 @@ public class HouseScene : MonoBehaviour {
 
         float kitchenWidth = 2.5f;
         float kitchenLength = 4.0f;
-        float kitchenHeight = 4.0f;
+        float kitchenHeight = 3.5f;
 
         float wallGap = 0.05f;
 
@@ -106,7 +106,7 @@ public class HouseScene : MonoBehaviour {
         ObjectInScene bin = InstantiateObject("Bin");
         Bounds binBounds = bin.GetBoundingBoxDimensions();
         PlaceObjectInScene(bin, kitchenObjects.objs,
-            new Vector3(-kitchenWidth/2.0f + (binBounds.extents.x * 0.015f) /2.0f + 0.1f, 0, kitchenLength / 2.0f + (binBounds.extents.z* 0.015f) - wallGap),
+            new Vector3(-kitchenWidth/2.0f + (binBounds.extents.x * 0.015f) / 2.0f + 0.4f + 0.1f, 0, kitchenLength / 2.0f + (binBounds.extents.z* 0.015f) - 0.2f),
             new Vector3(0, Mathf.Deg2Rad * 90.0f, 0),
             new Vector3(0.015f, 0.015f, 0.015f)
         );
@@ -131,12 +131,68 @@ public class HouseScene : MonoBehaviour {
         Bounds windowWallBounds = windowWall.GetBoundingBoxDimensions();
         PlaceObjectInScene(windowWall, kitchenObjects.objs,
             new Vector3(kitchenWidth / 2.0f, kitchenHeight / 2.0f, 0),
-            new Vector3(Mathf.Deg2Rad * 270.0f, 0, Mathf.Deg2Rad * 90.0f),
-            new Vector3(kitchenLength, 0, kitchenWidth*1.6f) // exactly 1.6?
+            new Vector3(Mathf.Deg2Rad * 90.0f * 3, 0, Mathf.Deg2Rad * 90.0f),
+            new Vector3(kitchenLength, 0, kitchenWidth*1.4f)
         );
         walls.Add(windowWall);
 
         return (roofs, walls, kitchenObjects);
+    }
+
+    private (List<ObjectInScene> roofs, List<ObjectInScene> walls, Collection bathroomObjects) MakeBathroom()
+    {
+        Collection bathroomObjects = new Collection();
+        List<ObjectInScene> roofs = new();
+        List<ObjectInScene> walls = new();
+
+        float bathroomWidth = 4.0f;
+        float bathroomLength = 3.0f;
+        float bathroomHeight = 3.0f;
+
+        // X is "across"
+        ObjectInScene floor = InstantiateObject("PlaneY");
+        floor.transform.scale = new Vector3(bathroomWidth, 0, bathroomLength);
+        floor.ComputeModelMatrix();
+        bathroomObjects.objs.Add(floor);
+
+        ObjectInScene roof = InstantiateObject("PlaneY");
+        PlaceObjectInScene(roof, bathroomObjects.objs,
+            new Vector3(0, bathroomHeight, 0),
+            new Vector3(Mathf.Deg2Rad * 180.0f, 0.0f, 0.0f), // point normal downwards
+            new Vector3(bathroomWidth, 0, bathroomLength)
+        );
+        roofs.Add(roof);
+
+        ObjectInScene toilet = InstantiateObject("toilet2");
+        PlaceObjectInScene(toilet, bathroomObjects.objs,
+            new Vector3(-1.2f, 0, -1.0f),
+            new Vector3(0, Mathf.Deg2Rad * -90.0f, 0),
+            new Vector3(0.5f, 0.5f, 0.5f)
+        );
+
+        ObjectInScene sink = InstantiateObject("sink");
+        Bounds sinkBounds = sink.GetBoundingBoxDimensions();
+        PlaceObjectInScene(sink, bathroomObjects.objs,
+            new Vector3(-1.2f, 0, 1.4f - sinkBounds.extents.z/2),
+            new Vector3(0, Mathf.Deg2Rad * 90.0f, 0),
+            new Vector3(0.5f, 0.5f, 0.5f)
+        );
+
+        ObjectInScene mirror = InstantiateObject("mirror");
+        PlaceObjectInScene(mirror, bathroomObjects.objs,
+            new Vector3(-1.2f, sinkBounds.size.y*0.8f - 0.25f, 1.4f),
+            new Vector3(0, Mathf.Deg2Rad * 90.0f, 0),
+            new Vector3(0.8f, 0.8f, 0.8f)
+        );
+
+        ObjectInScene shower = InstantiateObject("shower");
+        PlaceObjectInScene(shower, bathroomObjects.objs,
+            new Vector3(1.4f, 0, 1.0f),
+            new Vector3(0, Mathf.Deg2Rad * 180.0f, 0),
+            new Vector3(0.8f, 0.8f, 0.8f)
+        );
+
+        return (roofs, walls, bathroomObjects);
     }
 
     private (List<ObjectInScene> roofs, List<ObjectInScene> walls, Collection allRoomObjects) MakeMainRoom() {
@@ -146,7 +202,7 @@ public class HouseScene : MonoBehaviour {
 
         float mainRoomWidth = 8.0f;
         float mainRoomLength = 4.0f;
-        float mainRoomHeight = 4.0f;
+        float mainRoomHeight = 3.5f;
 
         ObjectInScene bed = InstantiateObject("bed1");
         Bounds bedBounds = bed.GetBoundingBoxDimensions();
@@ -176,7 +232,7 @@ public class HouseScene : MonoBehaviour {
         PlaceObjectInScene(nearBedroomWall, livingRoomObjects.objs,
             new Vector3(-mainRoomWidth / 2 + 3.0f, mainRoomLength / 2, 0),
             new Vector3(0.0f, Mathf.Deg2Rad * 180.0f, Mathf.Deg2Rad * 90.0f),
-            new Vector3(mainRoomHeight, 0, mainRoomLength)
+            new Vector3(mainRoomLength, 0, mainRoomHeight + 0.5f)
         );
         walls.Add(nearBedroomWall);
 
@@ -185,7 +241,7 @@ public class HouseScene : MonoBehaviour {
         PlaceObjectInScene(farBedroomWall, livingRoomObjects.objs,
             new Vector3(-mainRoomWidth / 2, mainRoomLength / 2, 0),
             new Vector3(0.0f, 0.0f, -Mathf.Deg2Rad * 90.0f),
-            new Vector3(mainRoomHeight, 0, mainRoomLength)
+            new Vector3(mainRoomLength, 0, mainRoomHeight + 0.5f)
         );
         walls.Add(farBedroomWall);
 
@@ -210,7 +266,7 @@ public class HouseScene : MonoBehaviour {
         PlaceObjectInScene(shortWallA, livingRoomObjects.objs,
             new Vector3(mainRoomWidth / 2, mainRoomLength / 2.0f, 0),
             new Vector3(0.0f, 0.0f, Mathf.Deg2Rad * 90.0f),
-            new Vector3(mainRoomHeight, 0, mainRoomLength)
+            new Vector3(mainRoomLength, 0, mainRoomHeight+0.5f)
         );
         walls.Add(shortWallA);
 
@@ -229,6 +285,14 @@ public class HouseScene : MonoBehaviour {
         longWallB.ComputeModelMatrix();
         livingRoomObjects.objs.Add(longWallB);
         walls.Add(longWallB);
+
+        ObjectInScene TV_table = InstantiateObject("tvtable");
+        // TV_table.transform.position = new Vector3(2.0f, 0, -1.3f);
+        TV_table.transform.position = new Vector3(0, 0, 0);
+        TV_table.transform.rotation = new Vector3(0, Mathf.Deg2Rad * 90.0f, 0);
+        TV_table.transform.scale = new Vector3(1,1,1);
+        TV_table.ComputeModelMatrix();
+        livingRoomObjects.objs.Add(TV_table);
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -287,11 +351,6 @@ public class HouseScene : MonoBehaviour {
         roofs = new();
         walls = new();
 
-        ObjectInScene a = InstantiateObject("toilet2"); Debug.LogError("toilet2 bounds = " + a.GetBoundingBoxDimensions() + "\n" + a.GetBoundingBoxDimensions().size);
-        ObjectInScene b = InstantiateObject("sink"); Debug.LogError("sink bounds = " + b.GetBoundingBoxDimensions() + "\n" + b.GetBoundingBoxDimensions().size);
-        ObjectInScene c = InstantiateObject("mirror"); Debug.LogError("mirror bounds = " + c.GetBoundingBoxDimensions() + "\n" + c.GetBoundingBoxDimensions().size);
-        ObjectInScene d = InstantiateObject("shower"); Debug.LogError("shower bounds = " + d.GetBoundingBoxDimensions() + "\n" + d.GetBoundingBoxDimensions().size);
-
         (List<ObjectInScene> livingRoomRoof, List<ObjectInScene> livingRoomWalls, Collection livingRoomObjects) = MakeMainRoom();
         livingRoomObjects.collectionTransform.position = new Vector3(-8.0f / 2.0f - 2.5f / 2.0f, 0, 0);
         livingRoomObjects.UpdateTransforms();
@@ -302,6 +361,12 @@ public class HouseScene : MonoBehaviour {
         kitchenObjects.UpdateTransforms(); */
         sceneObjects.AddRange(kitchenObjects.objs);
         roofs.AddRange(kitchenRoofs); walls.AddRange(kitchenWalls);
+
+        (List<ObjectInScene> bathroomRoofs, List<ObjectInScene> bathroomWalls, Collection bathroomObjects) = MakeBathroom();
+        bathroomObjects.collectionTransform.position = new Vector3(-7.25f, 0, 3.5f);
+        bathroomObjects.UpdateTransforms();
+        sceneObjects.AddRange(bathroomObjects.objs);
+        roofs.AddRange(bathroomRoofs); walls.AddRange(bathroomWalls);
     }
 
     ObjectInScene LoadObject(string path)

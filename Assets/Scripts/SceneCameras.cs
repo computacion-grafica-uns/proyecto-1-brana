@@ -185,7 +185,7 @@ public class OrbitalCamera : SceneCamera
 public class FirstPersonCamera : SceneCamera
 {
     public float horizontalAngle;
-    public float cameraForwardSpeed = 2; // "units per second"
+    public float cameraForwardSpeed = 4; // "units per second"
     public FirstPersonCamera(Vector3 pos, Vector3 lookAt, Vector3 up)
     {
         this.horizontalAngle = 0.0f;
