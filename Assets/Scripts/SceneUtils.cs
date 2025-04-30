@@ -22,6 +22,13 @@ public class CollectionTree
         subcollections.Add(col);
     }
 
+    // this is for the root collection to transform all its children
+    public void ApplyRootTransform()
+    {
+        Matrix4x4 transformModelMatrix = transform.ModelMatrix();
+        ApplyTransform(transformModelMatrix);
+    }
+
     public void ApplyTransform(Matrix4x4 parentTransform)
     {
         foreach (ObjectInScene obj in objects)
